@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "minio.fullname" . }}
+  name: {{ include "minio-non-tls.fullname" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "minio.name" . }}
+      app: {{ include "minio-non-tls.name" . }}
   template:
     metadata:
       labels:
-        app: {{ include "minio.name" . }}
+        app: {{ include "minio-non-tls.name" . }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
@@ -20,12 +20,11 @@ spec:
             - name: localvolume
               mountPath: /data
           command: ["/bin/bash"]
-          args: ["-c","minio server /data --console-address :{{ .Values.service.consolePort }}"]
+          args: ["-c","minio-non-tls server /data --console-address :{{ .Values.service.consolePort }}"]
           ports:
             - containerPort: {{ .Values.service.consolePort }}
             - containerPort: {{ .Values.service.s3Port }}
       volumes:
-        - name: localvolume
-          hostPath: # MinIO generally recommends using locally-attached volumes
-            path: {{ .Values.hostPath }} # Specify a path to a local drive or volume on the Kubernetes worker node
-            type: DirectoryOrCreate # The path to the last directory must exist
+        - name: storage
+          persistentVolumeClaim:
+            claimName: {{ include "minio-non-tls.fullname" . }}-pvc

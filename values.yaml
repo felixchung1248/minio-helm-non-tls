@@ -7,8 +7,9 @@ service:
     type: NodePort
     consolePort: 9090
     consoleTargetPort: 9090
-    consoleNodePort: 30090
+    consoleNodePort: 32090
     s3Port: 9000
     s3TargetPort: 9000
-    s3NodePort: 30900
-hostPath: /home/felixchung/data
+    s3NodePort: 32900
+storage: 
+    size: 10G
