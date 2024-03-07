@@ -17,7 +17,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
-            - name: localvolume
+            - name: storage
               mountPath: /data
           command: ["/bin/bash"]
           args: ["-c","minio-non-tls server /data --console-address :{{ .Values.service.consolePort }}"]
