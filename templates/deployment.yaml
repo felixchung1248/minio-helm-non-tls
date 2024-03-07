@@ -20,7 +20,7 @@ spec:
             - name: storage
               mountPath: /data
           command: ["/bin/bash"]
-          args: ["-c","minio-non-tls server /data --console-address :{{ .Values.service.consolePort }}"]
+          args: ["-c","minio server /data --console-address :{{ .Values.service.consolePort }}"]
           ports:
             - containerPort: {{ .Values.service.consolePort }}
             - containerPort: {{ .Values.service.s3Port }}
